@@ -3,6 +3,8 @@ namespace Banking\Entities;
 
 use Banking\Entities\Contracts\CurrencyBalanceInterface;
 use Banking\Exceptions\Values\BalanceInsufficientFundsException;
+use Banking\Exceptions\Values\WrongBalanceAmountException;
+use Banking\ValueObjects\BalanceAmountValue;
 use Banking\ValueObjects\BalanceWithdrawAmountValue;
 
 class CurrencyBalance implements CurrencyBalanceInterface
@@ -19,10 +21,12 @@ class CurrencyBalance implements CurrencyBalanceInterface
     /**
      * @param  float  $value
      * @return void
+     * @throws WrongBalanceAmountException
      */
     public function deposit(float $value): void
     {
-        $this->amount += $value;
+        $depositValue = new BalanceAmountValue($value);
+        $this->amount += $depositValue->getValue();
     }
 
     /**

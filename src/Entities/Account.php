@@ -18,9 +18,9 @@ class Account implements AccountEntityInterface
 {
     /**
      */
-    public SplObjectStorage $currencyBalances;
+    private SplObjectStorage $currencyBalances;
 
-    private ?Currency $defaultCurrency;
+    private ?CurrencyCodeValue $defaultCurrency;
 
     /**
      * @param  Bank  $bank
@@ -31,12 +31,13 @@ class Account implements AccountEntityInterface
     }
 
     /**
-     * @param  CurrencyCodeValue  $currencyCodeValue
+     * @param  string  $currencyCode
      * @return void
+     * @throws WrongCurrencyCodeException
      */
-    public function addCurrency(CurrencyCodeValue $currencyCodeValue): void
+    public function addCurrencyBalance(string $currencyCode): void
     {
-        $this->currencyBalances->attach(new CurrencyBalance(0.00, $currencyCodeValue));
+        $this->currencyBalances->attach(new CurrencyBalance(0.00, new CurrencyCodeValue($currencyCode)));
     }
 
     /**
@@ -46,32 +47,30 @@ class Account implements AccountEntityInterface
      * @throws UnsupportedCurrencyCode|WrongCurrencyCodeException
      * @throws WrongBalanceAmountException
      */
-    public function removeCurrency(CurrencyCodeValue $currencyCodeValue): void
+    public function removeCurrencyBalance($currencyCode): void
     {
         if (is_null($this->defaultCurrency)) {
             throw new DefaultCurrencyIsNotSet();
         }
 
-        $currencyBalance = $this->currencyBalances->find($currencyCodeValue);
-        $defaultCurrencyCode = new CurrencyCodeValue($this->defaultCurrency->code);
-        $money = MoneyFactory::create($this->bank, $currencyBalance->amount, $currencyCodeValue);
-        $mooneyAmount = new BalanceAmountValue($money->exchangeTo($defaultCurrencyCode));
-        $this->deposit($defaultCurrencyCode, $mooneyAmount);
-
+        $currencyBalance = $this->currencyBalances->find($currencyCode);
+        $money = MoneyFactory::create($this->bank, $currencyBalance->amount, $currencyCode);
+        $this->deposit($this->defaultCurrency, $money->exchangeTo($this->defaultCurrency));
         $this->currencyBalances->detach($currencyBalance);
     }
 
     /**
-     * @param  CurrencyCodeValue  $currencyCode
+     * @param  string  $currencyCode
      * @return void
+     * @throws WrongCurrencyCodeException
      */
-    public function setDefaultCurrency(CurrencyCodeValue $currencyCode): void
+    public function setDefaultCurrency(string $currencyCode): void
     {
-        $this->defaultCurrency = new Currency($currencyCode);
+        $this->defaultCurrency = new CurrencyCodeValue($currencyCode);
     }
 
     /**
-     * @return Currency[]
+     * @return string[]
      */
     public function getSupportedCurrencies(): array
     {
@@ -84,23 +83,17 @@ class Account implements AccountEntityInterface
     }
 
     /**
-     * @return Currency
-     */
-    public function getDefaultCurrency(): Currency
-    {
-        return $this->defaultCurrency;
-    }
-
-    /**
-     * @param  CurrencyCodeValue  $currencyCode
-     * @param  BalanceAmountValue  $balanceAmount
+     * @param  string  $currencyCode
+     * @param  float  $balanceAmount
      * @return void
      * @throws UnsupportedCurrencyCode
+     * @throws WrongBalanceAmountException
+     * @throws WrongCurrencyCodeException
      */
-    public function deposit(CurrencyCodeValue $currencyCode, BalanceAmountValue $balanceAmount): void
+    public function deposit(string $currencyCode, float $balanceAmount): void
     {
-        $balance = $this->currencyBalances->find($currencyCode);
-        $balance->deposit($balanceAmount->getValue());
+        $balance = $this->currencyBalances->find(new CurrencyCodeValue($currencyCode));
+        $balance->deposit($balanceAmount);
     }
 
     /**
@@ -109,32 +102,36 @@ class Account implements AccountEntityInterface
      * @return Money
      * @throws BalanceInsufficientFundsException
      * @throws UnsupportedCurrencyCode
+     * @throws WrongCurrencyCodeException
      */
-    public function withdraw(CurrencyCodeValue $currencyCode, BalanceAmountValue $balanceAmount): Money
+    public function withdraw(string $currencyCode, float $balanceAmount): Money
     {
-        $balance = $this->currencyBalances->find($currencyCode->getValue());
-        return MoneyFactory::create($this->bank, $balance->withdraw($balanceAmount->getValue()), $currencyCode);
+        $balance = $this->currencyBalances->find($currencyCode);
+        return MoneyFactory::create($this->bank, $balance->withdraw($balanceAmount), $currencyCode);
     }
 
     /**
-     * @param  CurrencyCodeValue|null  $currencyCode
+     * @param  string|null  $currencyCode
      * @return float
-     * @throws WrongCurrencyCodeException|DefaultCurrencyIsNotSet
+     * @throws DefaultCurrencyIsNotSet
+     * @throws WrongCurrencyCodeException
      */
-    public function getSummaryBalance(?CurrencyCodeValue $currencyCode = null): float
+    public function getSummaryBalance(string $currencyCode = null): float
     {
         if (is_null($this->defaultCurrency)) {
             throw new DefaultCurrencyIsNotSet();
         }
 
         if (is_null($currencyCode)) {
-            $currencyCode = $this->defaultCurrency->code;
+            $currencyCode = $this->defaultCurrency->getValue();
+        } else {
+            $currencyCode = new CurrencyCodeValue($currencyCode);
         }
 
         $summary = [];
         foreach ($this->currencyBalances as $balance) {
             $currencyFrom = new CurrencyCodeValue($balance->currencyCode);
-            $summary[$balance->currencyCode . ' => ' . $currencyCode] = $this->bank->exchange($currencyFrom, $currencyCode, $balance->amount);
+            $summary[] = $this->bank->exchange($currencyFrom, $currencyCode, $balance->amount);
         }
 
         return array_sum($summary);

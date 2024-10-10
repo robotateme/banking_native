@@ -8,7 +8,7 @@
     },
     "authors": [
         {
-            "name": "Ярослав Леженко",
+            "name": "\u042f\u0440\u043e\u0441\u043b\u0430\u0432 \u041b\u0435\u0436\u0435\u043d\u043a\u043e",
             "email": "jarwork884@gmail.com"
         }
     ],
@@ -17,6 +17,8 @@
         "ext-intl": "*"
     },
     "require-dev": {
-        "codeception/codeception": "5.2.x-dev"
+        "codeception/codeception": "5.2.x-dev",
+        "codeception/module-phpbrowser": "*",
+        "codeception/module-asserts": "*"
     }
 }

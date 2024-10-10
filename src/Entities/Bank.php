@@ -1,14 +1,18 @@
 <?php
+
 namespace Banking\Entities;
+
 use Banking\Entities\Contracts\BankEntityInterface;
+use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Factories\AccountFactory;
+use Banking\ValueObjects\CurrencyCodeValue;
 
 class Bank implements BankEntityInterface
 {
     /**
-     * @param CurrencyRate[]  $rates
+     * @param  CurrencyRate[]  $currencyRates
      */
-    public function __construct(private array $rates)
+    public function __construct(private array $currencyRates = [])
     {
 
     }
@@ -16,11 +20,6 @@ class Bank implements BankEntityInterface
     public function newAccount(): Account
     {
         return AccountFactory::create($this);
-    }
-
-    public function getRates(): array
-    {
-        return $this->rates;
     }
 
     /**
@@ -32,31 +31,40 @@ class Bank implements BankEntityInterface
     public function exchange(string $currencyFrom, string $currencyTo, float $amount): float
     {
         $convRates = [];
-        foreach ($this->rates as $rate) {
-            $convRates[] = new CurrencyRate($rate->currencyRel, $rate->currencyCode,  1 / $rate->value);
+        foreach ($this->currencyRates as $rate) {
+            $convRates[] = new CurrencyRate($rate->getCurrencyRel(), $rate->getCurrencyCode(), 1 / $rate->getValue());
         }
-        $rates = array_merge($this->rates, $convRates);
+
+        $rates = array_merge($this->currencyRates, $convRates);
 
         /** @var CurrencyRate $rate */
         foreach ($rates as $rate) {
-            if ($currencyFrom === $rate->currencyCode && $currencyTo === $rate->currencyRel) {
-                return $amount * $rate->value;
+            if ($currencyFrom === $rate->getCurrencyCode() && $currencyTo === $rate->getCurrencyRel()) {
+                return $amount * $rate->getValue();
             }
         }
 
         return $amount;
     }
 
-    public function setNewRateValue(CurrencyRate $newRate): array
+    /**
+     * @param  string  $currency
+     * @param  string  $currencyRel
+     * @param  float  $value
+     * @return CurrencyRate
+     * @throws WrongCurrencyCodeException
+     */
+    public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyRate
     {
-        foreach ($this->rates as $rate) {
-            if ($rate->currencyCode === $newRate->currencyCode) {
-                $rate->value = $newRate->value;
-                return $this->rates;
+        $newRate = new CurrencyRate(new CurrencyCodeValue($currency), new CurrencyCodeValue($currencyRel), $value);
+        foreach ($this->currencyRates as $rate) {
+            if ($rate->getCurrencyCode() === $currency && $rate->getCurrencyRel() === $currencyRel) {
+                $rate->setValue($value);
+                return $rate;
             }
         }
 
-        $this->rates[] = $newRate;
-        return $this->rates;
+        $this->currencyRates[] = $newRate;
+        return $newRate;
     }
 }

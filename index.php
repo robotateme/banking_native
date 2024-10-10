@@ -2,53 +2,84 @@
 require_once __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 
 use Banking\Entities\Bank;
-use Banking\Entities\CurrencyRate;
-use Banking\ValueObjects\BalanceAmountValue;
-use Banking\ValueObjects\CurrencyCodeValue;
+use Banking\Exceptions\Entities\DefaultCurrencyIsNotSet;
+use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
+use Banking\Exceptions\Values\WrongBalanceAmountException;
+use Banking\Exceptions\Values\WrongCurrencyCodeException;
 
 
-$bank = new Bank([
-    new CurrencyRate(new CurrencyCodeValue('USD'), new CurrencyCodeValue('RUB'), 70),
-    new CurrencyRate(new CurrencyCodeValue('EUR'), new CurrencyCodeValue('RUB'), 80),
-    new CurrencyRate(new CurrencyCodeValue('EUR'), new CurrencyCodeValue('USD'), 1),
-]);
+try {
+    $bank = new Bank();
+    $usd = $bank->setNewCurrencyRate('USD', 'RUB', 70);
+    $eur = $bank->setNewCurrencyRate('EUR', 'RUB', 80);
+    $bank->setNewCurrencyRate('EUR', 'USD');
 
-$account = $bank->newAccount();
-$account->addCurrency(new CurrencyCodeValue('RUB'));
-$account->addCurrency(new CurrencyCodeValue('EUR'));
-$account->addCurrency(new CurrencyCodeValue('USD'));
-$account->setDefaultCurrency(new CurrencyCodeValue('RUB'));
-dump($account->getSupportedCurrencies());
-$account->deposit(new CurrencyCodeValue('RUB'), new BalanceAmountValue(1000.0));
-$account->deposit(new CurrencyCodeValue('EUR'), new BalanceAmountValue(50.0));
-$account->deposit(new CurrencyCodeValue('USD'), new BalanceAmountValue(50.0));
+    $account = $bank->newAccount();
+    $account->addCurrencyBalance('RUB');
+    $account->addCurrencyBalance('EUR');
+    $account->addCurrencyBalance('USD');
 
-dump($account->getSummaryBalance() . ' RUB');
-dump($account->getSummaryBalance(new CurrencyCodeValue('USD')). ' USD');
-dump($account->getSummaryBalance(new CurrencyCodeValue('EUR')). ' EUR');
+    $account->setDefaultCurrency('RUB');
+    dump($account->getSupportedCurrencies());
 
-$bank->setNewRateValue(new CurrencyRate(new CurrencyCodeValue('USD'), new CurrencyCodeValue('RUB'), 100));
-$bank->setNewRateValue(new CurrencyRate(new CurrencyCodeValue('EUR'), new CurrencyCodeValue('RUB'), 150));
+    $account->deposit('RUB', 1000);
+    $account->deposit('EUR', 50);
+    $account->deposit('USD', 50);
 
-dump($account->getSummaryBalance() . ' RUB');
+    dump($account->getSummaryBalance() . ' RUB');
+    dump($account->getSummaryBalance('USD'). ' USD');
+    dump($account->getSummaryBalance('EUR'). ' EUR');
 
-$account->setDefaultCurrency(new CurrencyCodeValue('EUR'));
-dump($account->getSummaryBalance() . ' EUR');
+    $usd->setValue(100);
+    $eur->setValue(150);
 
-$money = $account->withdraw(new CurrencyCodeValue('RUB'), new BalanceAmountValue(1000));
-$moneyAmountEur = $money->exchangeTo(new CurrencyCodeValue('EUR'));
+    dump($account->getSummaryBalance() . ' RUB');
+    $account->setDefaultCurrency('EUR');
+    dump($account->getSummaryBalance() . ' EUR');
 
-$account->deposit(new CurrencyCodeValue('EUR'), new BalanceAmountValue($moneyAmountEur));
-dump($account->getSummaryBalance() . ' EUR');
+    $money = $account->withdraw('RUB', 1000);
+    $account->deposit('EUR', $money->exchangeTo('EUR'));
 
-$bank->setNewRateValue(new CurrencyRate(new CurrencyCodeValue('EUR'), new CurrencyCodeValue('RUB'), 120));
-dump($account->getSummaryBalance() . ' EUR');
+    dump($account->getSummaryBalance() . ' EUR');
+    $eur->setValue(120);
+    dump($account->getSummaryBalance() . ' EUR');
 
-$account->setDefaultCurrency(new CurrencyCodeValue('RUB'));
-$account->removeCurrency(new CurrencyCodeValue('EUR'));
-$account->removeCurrency(new CurrencyCodeValue('USD'));
-dump($account->getSupportedCurrencies());
-dump($account->getSummaryBalance() . ' RUB');
+
+    $account->setDefaultCurrency('RUB');
+    $account->removeCurrencyBalance('EUR');
+    $account->removeCurrencyBalance('USD');
+
+    dump($account->getSupportedCurrencies());
+    dump($account->getSummaryBalance() . ' RUB');
+
+} catch (WrongCurrencyCodeException|UnsupportedCurrencyCode|WrongBalanceAmountException|DefaultCurrencyIsNotSet $e) {
+    dump($e->getMessage());
+}
+
+
+
+/*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*/
 
 
 
