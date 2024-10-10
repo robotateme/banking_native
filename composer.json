@@ -1,0 +1,22 @@
+{
+    "name": "robotateme/banking_native",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Banking\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ярослав Леженко",
+            "email": "jarwork884@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-intl": "*"
+    },
+    "require-dev": {
+        "codeception/codeception": "5.2.x-dev"
+    }
+}
