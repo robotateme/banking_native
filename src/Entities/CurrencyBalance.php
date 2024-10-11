@@ -1,11 +1,11 @@
 <?php
+declare(strict_types=1);
 namespace Banking\Entities;
 
 use Banking\Entities\Contracts\CurrencyBalanceInterface;
 use Banking\Exceptions\Values\BalanceInsufficientFundsException;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\ValueObjects\BalanceAmountValue;
-use Banking\ValueObjects\BalanceWithdrawAmountValue;
 
 class CurrencyBalance implements CurrencyBalanceInterface
 {
@@ -14,8 +14,8 @@ class CurrencyBalance implements CurrencyBalanceInterface
      * @param  string  $currencyCode
      */
     public function __construct(
-        public float $amount,
-        public string $currencyCode
+        private float $amount,
+        private readonly string $currencyCode
     ) {}
 
     /**
@@ -32,12 +32,22 @@ class CurrencyBalance implements CurrencyBalanceInterface
     /**
      * @param  float  $value
      * @return float
-     * @throws BalanceInsufficientFundsException
+     * @throws WrongBalanceAmountException
      */
     public function withdraw(float $value): float
     {
-        $newAmount = new BalanceWithdrawAmountValue($this->amount, $value);
-        $this->amount = $newAmount->getValue();
-        return $value;
+        $withdrawValue = new BalanceAmountValue($value);
+        $this->amount -= $withdrawValue->getValue();
+        return $withdrawValue->getValue();
+    }
+
+    public function getCurrencyCode(): string
+    {
+        return $this->currencyCode;
+    }
+
+    public function getAmount(): float
+    {
+        return $this->amount;
     }
 }

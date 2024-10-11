@@ -1,11 +1,10 @@
 <?php
-
+declare(strict_types=1);
 namespace Banking\ValueObjects;
 
 use Banking\Exceptions\Values\WrongBalanceAmountException;
-use Banking\ValueObjects\Contracts\ValueObjectInterface;
 
-readonly class BalanceAmountValue implements ValueObjectInterface
+readonly class BalanceAmountValue
 {
     /**
      * @throws WrongBalanceAmountException

@@ -1,27 +1,39 @@
 <?php
-
+declare(strict_types=1);
 namespace Banking\Entities;
 
-class CurrencyRate
+use Banking\Entities\Contracts\CurrencyRateInterface;
+use Banking\Exceptions\Values\WrongCurrencyRateValueException;
+use Banking\ValueObjects\CurrencyRateValue;
+
+class CurrencyRate implements CurrencyRateInterface
 {
+    private float $value;
+
     /**
      * @param  string  $currencyCode
      * @param  string  $currencyRel
      * @param  float  $value
+     * @throws WrongCurrencyRateValueException
      */
     public function __construct(
         private readonly string $currencyCode,
         private readonly string $currencyRel,
-        private float $value,
-    ) {}
+        float $value,
+    ) {
+        $rateValue = new CurrencyRateValue($value);
+        $this->value = $rateValue->getValue();
+    }
 
     /**
      * @param  float  $value
      * @return void
+     * @throws WrongCurrencyRateValueException
      */
     public function setValue(float $value): void
     {
-        $this->value = $value;
+        $rateValue = new CurrencyRateValue($value);
+        $this->value = $rateValue->getValue();
     }
 
     /**

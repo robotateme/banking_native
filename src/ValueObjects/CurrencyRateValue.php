@@ -1,16 +1,21 @@
 <?php
-
+declare(strict_types=1);
 namespace Banking\ValueObjects;
 
-use Banking\ValueObjects\Contracts\ValueObjectInterface;
+use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 
-readonly class CurrencyRateValue implements ValueObjectInterface
+readonly class CurrencyRateValue
 {
     /**
      * @param  float  $value
+     * @throws WrongCurrencyRateValueException
      */
     public function __construct(private float $value)
-    {}
+    {
+        if ($this->value <= 0) {
+            throw new WrongCurrencyRateValueException();
+        }
+    }
 
     /**
      * @return float

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Banking\Exceptions\Entities\Contracts;
 
 use Banking\Exceptions\Contracts\BaseException;
