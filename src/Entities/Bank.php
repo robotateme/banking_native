@@ -14,6 +14,9 @@ class Bank implements BankEntityInterface
 {
     private array $currencyRates = [];
 
+    /**
+     * @return AccountEntityInterface
+     */
     public function newAccount(): AccountEntityInterface
     {
         return AccountFactory::create($this);
@@ -24,11 +27,14 @@ class Bank implements BankEntityInterface
      * @param  string  $currencyTo
      * @param  float  $amount
      * @return float
+     * @throws WrongCurrencyRateValueException
      */
     public function exchange(string $currencyFrom, string $currencyTo, float $amount): float
     {
-        /** @var CurrencyRate $rate */
+        /** @var CurrencyEntityRate $rate */
         foreach ($this->currencyRates as $rate) {
+            $converseRate = $rate->makeRateConverse();
+            $this->currencyRates[$converseRate->getKey()] = $rate->makeRateConverse();
             if ($currencyFrom === $rate->getCurrencyCode() && $currencyTo === $rate->getCurrencyRel()) {
                 return $amount * $rate->getValue();
             }
@@ -41,19 +47,22 @@ class Bank implements BankEntityInterface
      * @param  string  $currency
      * @param  string  $currencyRel
      * @param  float  $value
-     * @return CurrencyRate
+     * @return CurrencyEntityRate
      * @throws WrongCurrencyCodeException
      * @throws WrongCurrencyRateValueException
      */
-    public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyRate
+    public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyEntityRate
     {
         $newRate = CurrencyRateFactory::create($currency, $currencyRel, $value);
         $this->currencyRates[$newRate->getKey()] = $newRate;
-        $converseRate = $newRate->makeConverse();
-        $this->currencyRates[$converseRate->getKey()] = $newRate->makeConverse();
+        $converseRate = $newRate->makeRateConverse();
+        $this->currencyRates[$converseRate->getKey()] = $newRate->makeRateConverse();
         return $newRate;
     }
 
+    /**
+     * @return array
+     */
     public function getCurrencyRates(): array
     {
         return $this->currencyRates;

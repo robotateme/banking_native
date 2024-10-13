@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Banking\Entities\Contracts;
 
-interface CurrencyBalanceInterface
+interface CurrencyEntityBalanceInterface
 {
     public function getCurrencyCode(): string;
 

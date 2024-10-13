@@ -3,11 +3,12 @@ declare(strict_types=1);
 namespace Banking\Entities;
 
 use Banking\Entities\Contracts\BankEntityInterface;
-use Banking\Entities\Contracts\MoneyInterface;
+use Banking\Entities\Contracts\MoneyEntityInterface;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
+use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\ValueObjects\CurrencyCodeValue;
 
-class Money implements MoneyInterface
+class MoneyEntity implements MoneyEntityInterface
 {
     public function __construct(
         readonly private BankEntityInterface $bank,
@@ -19,8 +20,8 @@ class Money implements MoneyInterface
 
     /**
      * @param  string  $currencyCodeTo
-     * @return Money
-     * @throws WrongCurrencyCodeException
+     * @return MoneyEntity
+     * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
      */
     public function exchangeTo(string $currencyCodeTo): static
     {

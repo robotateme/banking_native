@@ -10,6 +10,7 @@ use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
 use Banking\Exceptions\Values\BalanceInsufficientFundsException;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
+use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\Factories\MoneyFactory;
 use Banking\ValueObjects\AccountDepositValues;
 use Banking\ValueObjects\AccountWithdrawValues;
@@ -18,7 +19,7 @@ use Banking\ValueObjects\CurrencyCodeValue;
 class Account implements AccountEntityInterface
 {
     /**
-     * @var CurrencyBalance[]
+     * @var CurrencyEntityBalance[]
      */
     private array $currencyBalances = [];
 
@@ -44,7 +45,7 @@ class Account implements AccountEntityInterface
             throw new CurrencyBalanceAlreadyExistsException();
         }
 
-        $this->currencyBalances[$currencyCode] = new CurrencyBalance(0.00, $currencyCodeValue->getValue());
+        $this->currencyBalances[$currencyCode] = new CurrencyEntityBalance(0.00, $currencyCodeValue->getValue());
     }
 
     /**
@@ -53,7 +54,7 @@ class Account implements AccountEntityInterface
      * @throws DefaultCurrencyIsNotSet
      * @throws UnsupportedCurrencyCode
      * @throws WrongBalanceAmountException
-     * @throws WrongCurrencyCodeException
+     * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
      */
     public function removeCurrencyBalance(string $currencyCode): void
     {
@@ -115,13 +116,13 @@ class Account implements AccountEntityInterface
     /**
      * @param  string  $currencyCode
      * @param  float  $amount
-     * @return Money
+     * @return MoneyEntity
      * @throws BalanceInsufficientFundsException
      * @throws UnsupportedCurrencyCode
      * @throws WrongBalanceAmountException
      * @throws WrongCurrencyCodeException
      */
-    public function withdraw(string $currencyCode, float $amount): Money
+    public function withdraw(string $currencyCode, float $amount): MoneyEntity
     {
         $balance = $this->currencyBalances[$currencyCode];
 
@@ -143,7 +144,7 @@ class Account implements AccountEntityInterface
      * @param  string|null  $currencyCode
      * @return float
      * @throws DefaultCurrencyIsNotSet
-     * @throws WrongCurrencyCodeException
+     * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
      */
     public function getSummaryBalance(string $currencyCode = null): float
     {

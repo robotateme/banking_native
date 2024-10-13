@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Banking\Entities;
 
-use Banking\Entities\Contracts\CurrencyRateInterface;
+use Banking\Entities\Contracts\CurrencyEntityRateInterface;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\ValueObjects\CurrencyRateValue;
 
-class CurrencyRate implements CurrencyRateInterface
+class CurrencyEntityRate implements CurrencyEntityRateInterface
 {
     private float $value;
 
@@ -52,7 +52,7 @@ class CurrencyRate implements CurrencyRateInterface
     /**
      * @throws WrongCurrencyRateValueException
      */
-    public function makeConverse(): static
+    public function makeRateConverse(): static
     {
         return new static($this->currencyRel, $this->currencyCode, 1/$this->value);
     }
