@@ -5,13 +5,12 @@ namespace Banking\Entities;
 use Banking\Entities\Contracts\BankEntityInterface;
 use Banking\Entities\Contracts\MoneyInterface;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
-use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\ValueObjects\CurrencyCodeValue;
 
-readonly class Money implements MoneyInterface
+class Money implements MoneyInterface
 {
     public function __construct(
-        private BankEntityInterface $bank,
+        readonly private BankEntityInterface $bank,
         private float $amount,
         private string $currencyCode
     ) {
@@ -20,17 +19,22 @@ readonly class Money implements MoneyInterface
 
     /**
      * @param  string  $currencyCodeTo
-     * @return float
+     * @return Money
      * @throws WrongCurrencyCodeException
-     * @throws WrongCurrencyRateValueException
      */
-    public function exchangeTo(string $currencyCodeTo): float
+    public function exchangeTo(string $currencyCodeTo): static
     {
-        return $this->bank->exchange(
+        $currencyCodeTo = (new CurrencyCodeValue($currencyCodeTo))->getValue();
+        $amount = $this->bank->exchange(
             $this->currencyCode,
-            (new CurrencyCodeValue($currencyCodeTo))->getValue(),
+            $currencyCodeTo,
             $this->amount
         );
+
+        $this->currencyCode = $currencyCodeTo;
+        $this->amount = $amount;
+
+        return $this;
     }
 
     public function getAmount(): float

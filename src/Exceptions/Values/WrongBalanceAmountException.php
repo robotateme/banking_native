@@ -4,7 +4,6 @@ namespace Banking\Exceptions\Values;
 
 
 use Banking\Exceptions\Values\Contracts\BaseValueException;
-use Throwable;
 
 class WrongBalanceAmountException extends BaseValueException
 {

@@ -4,8 +4,6 @@ namespace Banking\Entities\Contracts;
 
 interface CurrencyRateInterface
 {
-    public function setValue(float $value): void;
-
     /**
      * @return float
      */
@@ -20,4 +18,9 @@ interface CurrencyRateInterface
      * @return string
      */
     public function getCurrencyRel(): string;
+
+    /**
+     * @return string
+     */
+    public function getKey(): string;
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 namespace Banking\Entities;
 
 use Banking\Entities\Contracts\CurrencyBalanceInterface;
-use Banking\Exceptions\Values\BalanceInsufficientFundsException;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\ValueObjects\BalanceAmountValue;
 
@@ -37,7 +36,7 @@ class CurrencyBalance implements CurrencyBalanceInterface
     public function withdraw(float $value): float
     {
         $withdrawValue = new BalanceAmountValue($value);
-        $this->amount -= $withdrawValue->getValue();
+        $this->amount = $this->amount - $withdrawValue->getValue();
         return $withdrawValue->getValue();
     }
 

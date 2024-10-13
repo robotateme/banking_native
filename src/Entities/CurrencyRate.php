@@ -26,17 +26,6 @@ class CurrencyRate implements CurrencyRateInterface
     }
 
     /**
-     * @param  float  $value
-     * @return void
-     * @throws WrongCurrencyRateValueException
-     */
-    public function setValue(float $value): void
-    {
-        $rateValue = new CurrencyRateValue($value);
-        $this->value = $rateValue->getValue();
-    }
-
-    /**
      * @return float
      */
     public function getValue(): float
@@ -58,5 +47,18 @@ class CurrencyRate implements CurrencyRateInterface
     public function getCurrencyRel(): string
     {
         return $this->currencyRel;
+    }
+
+    /**
+     * @throws WrongCurrencyRateValueException
+     */
+    public function makeConverse(): static
+    {
+        return new static($this->currencyRel, $this->currencyCode, 1/$this->value);
+    }
+
+    public function getKey(): string
+    {
+        return "$this->currencyCode - $this->currencyRel";
     }
 }
