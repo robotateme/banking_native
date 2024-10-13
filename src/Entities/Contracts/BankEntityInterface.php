@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Banking\Entities\Contracts;
 
-use Banking\Entities\CurrencyEntityRate;
+use Banking\Entities\CurrencyRate;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 
@@ -14,11 +14,11 @@ interface BankEntityInterface
      * @param  string  $currency
      * @param  string  $currencyRel
      * @param  float  $value
-     * @return CurrencyEntityRate
+     * @return CurrencyRate
      * @throws WrongCurrencyCodeException
      * @throws WrongCurrencyRateValueException
      */
-    public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyEntityRateInterface;
+    public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyRateEntityInterface;
 
     /**
      * @param  string  $currencyFrom

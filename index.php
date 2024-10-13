@@ -4,6 +4,7 @@ require_once __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.
 use Banking\Entities\Account;
 use Banking\Entities\Bank;
 use Banking\Enums\CurrenciesEnum;
+use Banking\Exceptions\Entities\CurrencyBalanceAlreadyExistsException;
 use Banking\Exceptions\Entities\DefaultCurrencyIsNotSet;
 use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
 use Banking\Exceptions\Values\BalanceInsufficientFundsException;
@@ -56,11 +57,10 @@ try {
     dump($account->getSummaryBalance().' RUB');
 
 } catch (
-WrongCurrencyCodeException|UnsupportedCurrencyCode|WrongBalanceAmountException|
+WrongCurrencyCodeException|UnsupportedCurrencyCode|WrongBalanceAmountException|CurrencyBalanceAlreadyExistsException|
 DefaultCurrencyIsNotSet|WrongCurrencyRateValueException|BalanceInsufficientFundsException $e) {
     dump($e->getMessage());
 }
-
 
 
 

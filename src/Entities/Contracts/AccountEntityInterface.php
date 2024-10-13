@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Banking\Entities\Contracts;
 
-use Banking\Entities\MoneyEntity;
+use Banking\Entities\Money;
 
 interface AccountEntityInterface
 {
@@ -40,9 +40,9 @@ interface AccountEntityInterface
     /**
      * @param  string  $currencyCode
      * @param  float  $amount
-     * @return MoneyEntity
+     * @return Money
      */
-    public function withdraw(string $currencyCode, float $amount): MoneyEntity;
+    public function withdraw(string $currencyCode, float $amount): Money;
 
 
     /**
@@ -50,4 +50,9 @@ interface AccountEntityInterface
      * @return float
      */
     public function getSummaryBalance(string $currencyCode = null): float;
+
+    /**
+     * @return string|null
+     */
+    public function getDefaultCurrency(): ?string;
 }

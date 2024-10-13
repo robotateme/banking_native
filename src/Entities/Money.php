@@ -8,7 +8,7 @@ use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\ValueObjects\CurrencyCodeValue;
 
-class MoneyEntity implements MoneyEntityInterface
+class Money implements MoneyEntityInterface
 {
     public function __construct(
         readonly private BankEntityInterface $bank,
@@ -20,7 +20,7 @@ class MoneyEntity implements MoneyEntityInterface
 
     /**
      * @param  string  $currencyCodeTo
-     * @return MoneyEntity
+     * @return Money
      * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
      */
     public function exchangeTo(string $currencyCodeTo): static

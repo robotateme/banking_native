@@ -2,7 +2,7 @@
 
 namespace Banking\Entities\Contracts;
 
-interface CurrencyEntityRateInterface
+interface CurrencyRateEntityInterface
 {
     /**
      * @return float

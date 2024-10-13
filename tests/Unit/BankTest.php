@@ -5,8 +5,8 @@ namespace Tests\Unit;
 
 use Banking\Entities\Bank;
 use Banking\Entities\Contracts\BankEntityInterface;
-use Banking\Entities\CurrencyEntityBalance;
-use Banking\Entities\CurrencyEntityRate;
+use Banking\Entities\CurrencyBalance;
+use Banking\Entities\CurrencyRate;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Codeception\Attribute\DataProvider;
@@ -16,7 +16,6 @@ use Tests\Support\UnitTester;
 
 class BankTest extends Unit
 {
-
     protected UnitTester $tester;
     protected BankEntityInterface $bank;
 
@@ -59,7 +58,7 @@ class BankTest extends Unit
      * @throws WrongCurrencyCodeException
      */
     #[NoReturn] #[DataProvider('dummyData')]
-    public function testExchange(CurrencyEntityRate $dummyCurrencyRate, CurrencyEntityBalance $dummyBalanceData, $dummyResult): void
+    public function testExchange(CurrencyRate $dummyCurrencyRate, CurrencyBalance $dummyBalanceData, $dummyResult): void
     {
         $this->bank->setNewCurrencyRate(
             $dummyCurrencyRate->getCurrencyCode(),
@@ -81,8 +80,8 @@ class BankTest extends Unit
      */
     public static function dummyData(): array
     {
-        $currencyRate = new CurrencyEntityRate('EUR', 'USD', 1.5);
-        $balance = new CurrencyEntityBalance(100, 'EUR');
+        $currencyRate = new CurrencyRate('EUR', 'USD', 1.5);
+        $balance = new CurrencyBalance(100, 'EUR');
         $result = 150.0;
 
         return [

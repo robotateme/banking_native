@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Banking\Entities;
 
-use Banking\Entities\Contracts\CurrencyEntityBalanceInterface;
+use Banking\Entities\Contracts\CurrencyBalanceEntityInterface;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\ValueObjects\BalanceAmountValue;
 
-class CurrencyEntityBalance implements CurrencyEntityBalanceInterface
+class CurrencyBalance implements CurrencyBalanceEntityInterface
 {
     /**
      * @param  float  $amount

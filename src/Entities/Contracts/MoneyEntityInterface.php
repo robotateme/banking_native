@@ -2,14 +2,14 @@
 declare(strict_types=1);
 namespace Banking\Entities\Contracts;
 
-use Banking\Entities\MoneyEntity;
+use Banking\Entities\Money;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 
 interface MoneyEntityInterface
 {
     /**
      * @param  string  $currencyCodeTo
-     * @return MoneyEntity
+     * @return Money
      * @throws WrongCurrencyCodeException
      */
     public function exchangeTo(string $currencyCodeTo): static;

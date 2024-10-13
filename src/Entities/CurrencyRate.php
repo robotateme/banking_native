@@ -2,11 +2,11 @@
 declare(strict_types=1);
 namespace Banking\Entities;
 
-use Banking\Entities\Contracts\CurrencyEntityRateInterface;
+use Banking\Entities\Contracts\CurrencyRateEntityInterface;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\ValueObjects\CurrencyRateValue;
 
-class CurrencyEntityRate implements CurrencyEntityRateInterface
+class CurrencyRate implements CurrencyRateEntityInterface
 {
     private float $value;
 
