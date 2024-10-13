@@ -37,7 +37,7 @@ class Account implements AccountEntityInterface
      * @param  string  $currencyCode
      * @return void
      * @throws WrongCurrencyCodeException
-     * @throws CurrencyBalanceAlreadyExistsException
+     * @throws CurrencyBalanceAlreadyExistsException|WrongBalanceAmountException
      */
     public function addCurrencyBalance(string $currencyCode): void
     {
@@ -150,7 +150,7 @@ class Account implements AccountEntityInterface
      * @param  string|null  $currencyCode
      * @return float
      * @throws DefaultCurrencyIsNotSet
-     * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
+     * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException|UnsupportedCurrencyCode
      */
     public function getSummaryBalance(string $currencyCode = null): float
     {

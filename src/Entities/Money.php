@@ -20,7 +20,7 @@ class Money implements MoneyEntityInterface
 
     /**
      * @param  string  $currencyCodeTo
-     * @return Money
+     * @return MoneyEntityInterface
      * @throws WrongCurrencyCodeException|WrongCurrencyRateValueException
      */
     public function exchangeTo(string $currencyCodeTo): static

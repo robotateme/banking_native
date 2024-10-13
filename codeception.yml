@@ -1,5 +1,11 @@
 namespace: Tests
 support_namespace: Support
+coverage:
+    enabled: true
+    remote: false
+    c3_url: http://localhost:8080
+    include:
+        - src/*
 paths:
     tests: tests
     output: tests/_output

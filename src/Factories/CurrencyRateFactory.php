@@ -7,6 +7,7 @@ use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 use Banking\Factories\Contracts\FactoryInterface;
 use Banking\ValueObjects\CurrencyCodeValue;
+use Banking\ValueObjects\CurrencyRateValue;
 
 class CurrencyRateFactory implements FactoryInterface
 {
@@ -19,6 +20,7 @@ class CurrencyRateFactory implements FactoryInterface
         return new CurrencyRate(
             (new CurrencyCodeValue($currency))->getValue(),
             (new CurrencyCodeValue($currencyRel))->getValue(),
-            $value);
+            (new CurrencyRateValue($value))->getValue()
+        );
     }
 }
