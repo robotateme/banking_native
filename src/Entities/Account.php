@@ -168,6 +168,34 @@ class Account implements AccountEntityInterface
     }
 
     /**
+     * @param  string|null  $currencyCode
+     * @return float
+     * @throws DefaultCurrencyIsNotSet
+     * @throws WrongCurrencyCodeException
+     * @throws UnsupportedCurrencyCode
+     */
+    public function getCurrencyBalance(string $currencyCode = null): float
+    {
+        if (is_null($this->defaultCurrency)) {
+            throw new DefaultCurrencyIsNotSet();
+        }
+
+        if (is_null($currencyCode)) {
+            $currencyCode = $this->defaultCurrency;
+        } else {
+            $currencyCode = new CurrencyCodeValue($currencyCode);
+        }
+
+        $balance = $this->currencyBalances[$currencyCode->getValue()];
+
+        if (is_null($balance)) {
+            throw new UnsupportedCurrencyCode();
+        }
+
+        return $balance->getAmount();
+    }
+
+    /**
      * @return string|null
      * @throws WrongCurrencyCodeException
      */
