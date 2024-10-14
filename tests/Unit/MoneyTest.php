@@ -8,7 +8,6 @@ use Banking\Entities\Bank;
 use Banking\Entities\Contracts\AccountEntityInterface;
 use Banking\Entities\Contracts\BankEntityInterface;
 use Banking\Entities\Contracts\MoneyEntityInterface;
-use Banking\Entities\Money;
 use Banking\Enums\CurrenciesEnum;
 use Banking\Exceptions\Entities\CurrencyBalanceAlreadyExistsException;
 use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
@@ -16,9 +15,10 @@ use Banking\Exceptions\Values\BalanceInsufficientFundsException;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
+use Codeception\Test\Unit;
 use Tests\Support\UnitTester;
 
-class MoneyTest extends \Codeception\Test\Unit
+class MoneyTest extends Unit
 {
 
     protected UnitTester $tester;

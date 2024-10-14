@@ -37,8 +37,9 @@ class AccountTest extends Unit
     }
 
     /**
-     * @throws WrongCurrencyCodeException
      * @throws CurrencyBalanceAlreadyExistsException
+     * @throws WrongBalanceAmountException
+     * @throws WrongCurrencyCodeException
      */
     public function testFailureSetCurrencyBalance(): void
     {
@@ -51,8 +52,9 @@ class AccountTest extends Unit
      * @param $firstCurrency
      * @param $secondCurrency
      * @throws CurrencyBalanceAlreadyExistsException
-     * @throws WrongCurrencyCodeException
      * @throws UnsupportedCurrencyCode
+     * @throws WrongBalanceAmountException
+     * @throws WrongCurrencyCodeException
      */
     #[DataProvider('dummyDefaultCurrency')]
     public function testSetDefaultCurrencyForAccount($firstCurrency, $secondCurrency): void
@@ -67,7 +69,7 @@ class AccountTest extends Unit
     }
 
     /**
-     * @throws WrongCurrencyCodeException|UnsupportedCurrencyCode
+     * @throws UnsupportedCurrencyCode
      */
     public function testFailureSetDefaultCurrencyForAccount(): void
     {
@@ -99,6 +101,7 @@ class AccountTest extends Unit
     }
 
     /**
+     * @throws BalanceInsufficientFundsException
      * @throws CurrencyBalanceAlreadyExistsException
      * @throws DefaultCurrencyIsNotSet
      * @throws UnsupportedCurrencyCode
