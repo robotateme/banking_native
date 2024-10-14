@@ -57,8 +57,19 @@ class CurrencyRate implements CurrencyRateEntityInterface
         return new static($this->currencyRel, $this->currencyCode, 1/$this->value);
     }
 
+    /**
+     * @return string
+     */
     public function getKey(): string
     {
         return "$this->currencyCode - $this->currencyRel";
+    }
+
+    /**
+     * @throws WrongCurrencyRateValueException
+     */
+    public function setValue(float $value): void
+    {
+        $this->value = (new CurrencyRateValue($value))->getValue();
     }
 }

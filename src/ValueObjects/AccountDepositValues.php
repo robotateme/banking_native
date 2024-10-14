@@ -8,26 +8,21 @@ use Banking\Exceptions\Values\WrongCurrencyCodeException;
 
 readonly class AccountDepositValues
 {
-    /**
-     * @throws UnsupportedCurrencyCode
-     */
     public function __construct(
         private string $currencyCode,
         private float $amount,
-        private array $supportedCurrencies,
     )
-    {
-        if (!in_array($currencyCode, $this->supportedCurrencies)) {
-            throw new UnsupportedCurrencyCode();
-        }
-    }
+    {}
 
     /**
+     * @return string
      * @throws WrongCurrencyCodeException
      */
     public function getCurrencyCode(): string
     {
-        return (new CurrencyCodeValue($this->currencyCode));
+
+
+        return (new CurrencyCodeValue($this->currencyCode))->getValue();
     }
 
     /**
@@ -36,10 +31,5 @@ readonly class AccountDepositValues
     public function getAmount(): float
     {
         return (new BalanceAmountValue($this->amount))->getValue();
-    }
-
-    public function getValue()
-    {
-        // TODO: Implement getValue() method.
     }
 }

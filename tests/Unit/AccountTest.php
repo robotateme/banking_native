@@ -100,12 +100,11 @@ class AccountTest extends Unit
 
     /**
      * @throws CurrencyBalanceAlreadyExistsException
+     * @throws DefaultCurrencyIsNotSet
      * @throws UnsupportedCurrencyCode
      * @throws WrongBalanceAmountException
      * @throws WrongCurrencyCodeException
      * @throws WrongCurrencyRateValueException
-     * @throws DefaultCurrencyIsNotSet
-     * @throws BalanceInsufficientFundsException
      */
     public function testWithdrawCurrencyBalance(): void
     {
@@ -125,7 +124,6 @@ class AccountTest extends Unit
     }
 
     /**
-     * @throws BalanceInsufficientFundsException
      * @throws CurrencyBalanceAlreadyExistsException
      * @throws UnsupportedCurrencyCode
      * @throws WrongBalanceAmountException

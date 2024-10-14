@@ -2,7 +2,7 @@
 
 namespace Banking\Entities\Contracts;
 
-interface CurrencyRateEntityInterface
+interface CurrencyRateEntityInterface extends EntityInterface
 {
     /**
      * @return float
@@ -23,4 +23,6 @@ interface CurrencyRateEntityInterface
      * @return string
      */
     public function getKey(): string;
+
+    public function setValue(float $value): void;
 }

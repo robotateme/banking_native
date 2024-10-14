@@ -6,7 +6,7 @@ use Banking\Entities\CurrencyRate;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 
-interface BankEntityInterface
+interface BankEntityInterface extends EntityInterface
 {
     public function getCurrencyRates(): array;
 

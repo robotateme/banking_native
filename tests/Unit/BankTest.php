@@ -42,6 +42,7 @@ class BankTest extends Unit
     {
         $this->expectException(WrongCurrencyCodeException::class);
         $this->bank->setNewCurrencyRate('JPY', 'RUB', 0.3);
+        $this->bank->setNewCurrencyRate('RUB', 'JPY', 0.3);
     }
 
     /**

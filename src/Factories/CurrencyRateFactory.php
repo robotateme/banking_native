@@ -2,6 +2,7 @@
 
 namespace Banking\Factories;
 
+use Banking\Entities\Contracts\CurrencyRateEntityInterface;
 use Banking\Entities\CurrencyRate;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
@@ -15,7 +16,7 @@ class CurrencyRateFactory implements FactoryInterface
      * @throws WrongCurrencyRateValueException
      * @throws WrongCurrencyCodeException
      */
-    public static function create(string $currency, string $currencyRel, float $value): CurrencyRate
+    public static function create(string $currency, string $currencyRel, float $value): CurrencyRateEntityInterface
     {
         return new CurrencyRate(
             (new CurrencyCodeValue($currency))->getValue(),

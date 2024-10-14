@@ -54,12 +54,13 @@ class MoneyTest extends \Codeception\Test\Unit
         $this->account->addCurrencyBalance(CurrenciesEnum::RUB);
         $this->account->addCurrencyBalance(CurrenciesEnum::EUR);
         $this->account->deposit(CurrenciesEnum::EUR, 100);
-        $money = $this->account->withdraw(CurrenciesEnum::EUR, 50);
+        $money = $this->account->withdraw(CurrenciesEnum::EUR, 40);
         $this->assertInstanceOf(MoneyEntityInterface::class, $money);
-        $this->assertEquals(50, $money->getAmount());
+        $this->assertEquals(40, $money->getAmount());
         $this->assertEquals(CurrenciesEnum::EUR, $money->getCurrencyCode());
+
         $money->exchangeTo(CurrenciesEnum::RUB);
         $this->assertEquals(CurrenciesEnum::RUB, $money->getCurrencyCode());
-        $this->assertEquals(200 * 50, $money->getAmount());
+        $this->assertEquals(200 * 40, $money->getAmount());
     }
 }

@@ -8,23 +8,20 @@ use Banking\Exceptions\Values\WrongCurrencyCodeException;
 
 readonly class CurrencyCodeValue
 {
+    public function __construct(private string $currencyCode)
+    {
+
+    }
+
     /**
      * @throws WrongCurrencyCodeException
      */
-    public function __construct(private string $currencyCode)
+    public function getValue(): string
     {
         if (!CurrencyCodesEnum::tryFrom($this->currencyCode)) {
             throw new WrongCurrencyCodeException($this->currencyCode);
         }
-    }
 
-    public function __toString(): string
-    {
-        return $this->currencyCode;
-    }
-
-    public function getValue(): string
-    {
         return $this->currencyCode;
     }
 }

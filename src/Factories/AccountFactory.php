@@ -5,9 +5,9 @@ namespace Banking\Factories;
 use Banking\Entities\Account;
 use Banking\Entities\Contracts\AccountEntityInterface;
 use Banking\Entities\Contracts\BankEntityInterface;
-use Banking\Factories\Contracts\FactoryInterface;
+use Banking\Factories\Contracts\AccountFactoryInterface;
 
-class AccountFactory implements FactoryInterface
+class AccountFactory implements AccountFactoryInterface
 {
     /**
      * @param  BankEntityInterface  $bank

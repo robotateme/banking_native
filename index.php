@@ -14,8 +14,8 @@ use Banking\Exceptions\Values\WrongCurrencyRateValueException;
 
 try {
     $bank = new Bank();
-    $bank->setNewCurrencyRate(CurrenciesEnum::USD, CurrenciesEnum::RUB, 70);
-    $bank->setNewCurrencyRate(CurrenciesEnum::EUR, CurrenciesEnum::RUB, 80);
+    $usd = $bank->setNewCurrencyRate(CurrenciesEnum::USD, CurrenciesEnum::RUB, 70);
+    $eur = $bank->setNewCurrencyRate(CurrenciesEnum::EUR, CurrenciesEnum::RUB, 80);
     $bank->setNewCurrencyRate(CurrenciesEnum::EUR, CurrenciesEnum::USD);
     /** @var Account $account */
     $account = $bank->newAccount();
@@ -33,14 +33,15 @@ try {
     dump($account->getSummaryBalance().' RUB');
     dump($account->getSummaryBalance(CurrenciesEnum::USD).' USD');
     dump($account->getSummaryBalance(CurrenciesEnum::EUR).' EUR');
-    $bank->setNewCurrencyRate(CurrenciesEnum::USD, CurrenciesEnum::RUB, 100);
-    $bank->setNewCurrencyRate(CurrenciesEnum::EUR, CurrenciesEnum::RUB, 150);
+    $eur->setValue(150);
+    $usd->setValue(100);
 
     dump($account->getSummaryBalance().' RUB');
     $account->setDefaultCurrency(CurrenciesEnum::EUR);
     dump($account->getSummaryBalance().' EUR');
 
     $money = $account->withdraw(CurrenciesEnum::RUB, 1000);
+
     $money->exchangeTo(CurrenciesEnum::EUR);
     $account->deposit(CurrenciesEnum::EUR, $money->getAmount());
     dump($account->getSummaryBalance().' EUR');
@@ -52,9 +53,9 @@ try {
     $account->setDefaultCurrency(CurrenciesEnum::RUB);
     $account->removeCurrencyBalance(CurrenciesEnum::EUR);
     $account->removeCurrencyBalance(CurrenciesEnum::USD);
-
     dump($account->getSupportedCurrencies());
     dump($account->getSummaryBalance().' RUB');
+
 
 } catch (
 WrongCurrencyCodeException|UnsupportedCurrencyCode|WrongBalanceAmountException|CurrencyBalanceAlreadyExistsException|

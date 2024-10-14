@@ -3,8 +3,10 @@ declare(strict_types=1);
 namespace Banking\Entities;
 
 use Banking\Entities\Contracts\CurrencyBalanceEntityInterface;
+use Banking\Exceptions\Values\BalanceInsufficientFundsException;
 use Banking\Exceptions\Values\WrongBalanceAmountException;
 use Banking\ValueObjects\BalanceAmountValue;
+use Banking\ValueObjects\BalanceAmountWithdrawValue;
 
 class CurrencyBalance implements CurrencyBalanceEntityInterface
 {
@@ -32,12 +34,13 @@ class CurrencyBalance implements CurrencyBalanceEntityInterface
      * @param  float  $value
      * @return float
      * @throws WrongBalanceAmountException
+     * @throws BalanceInsufficientFundsException
      */
     public function withdraw(float $value): float
     {
-        $withdrawValue = new BalanceAmountValue($value);
-        $this->amount = $this->amount - $withdrawValue->getValue();
-        return $withdrawValue->getValue();
+        $withdrawValue = new BalanceAmountWithdrawValue($this, $value);
+        $this->amount = $this->amount  - $withdrawValue->getValue();
+        return $value;
     }
 
     public function getCurrencyCode(): string

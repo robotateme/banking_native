@@ -5,7 +5,7 @@ namespace Banking\Entities\Contracts;
 use Banking\Entities\Money;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 
-interface MoneyEntityInterface
+interface MoneyEntityInterface extends EntityInterface
 {
     /**
      * @param  string  $currencyCodeTo

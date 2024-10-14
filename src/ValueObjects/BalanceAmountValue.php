@@ -6,18 +6,18 @@ use Banking\Exceptions\Values\WrongBalanceAmountException;
 
 readonly class BalanceAmountValue
 {
+    public function __construct(private float $amount)
+    {
+    }
+
     /**
      * @throws WrongBalanceAmountException
      */
-    public function __construct(private float $amount)
-    {
-        if ($amount < 0) {
-            throw new WrongBalanceAmountException();
-        }
-    }
-
     public function getValue(): float
     {
+        if ($this->amount < 0) {
+            throw new WrongBalanceAmountException();
+        }
         return $this->amount;
     }
 }

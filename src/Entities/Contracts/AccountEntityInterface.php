@@ -4,7 +4,7 @@ namespace Banking\Entities\Contracts;
 
 use Banking\Entities\Money;
 
-interface AccountEntityInterface
+interface AccountEntityInterface extends EntityInterface
 {
     /**
      * @param  string  $currencyCode
