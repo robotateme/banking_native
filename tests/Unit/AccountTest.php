@@ -96,7 +96,7 @@ class AccountTest extends Unit
         $this->account->deposit(CurrenciesEnum::RUB, 1000);
         $this->account->deposit(CurrenciesEnum::EUR, 50);
 
-        $this->assertEquals($this->account->getSummaryBalance(), (1000 / 120) + 50);
+        $this->assertEquals($this->account->getSummaryBalance(), round((1000 / 120) + 50, 3));
         $this->assertEquals($this->account->getSummaryBalance(CurrenciesEnum::RUB), 1000 + 50 * 120);
     }
 

@@ -51,7 +51,7 @@ class Bank implements BankEntityInterface
 
         foreach ($currencyRates as $rate) {
             if ($currencyFrom === $rate->getCurrencyCode() && $currencyTo === $rate->getCurrencyRel()) {
-                return $amount * $rate->getValue();
+                return round($amount * $rate->getValue(), 3);
             }
         }
 

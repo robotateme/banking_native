@@ -53,7 +53,7 @@ class ExampleTest extends Unit
         assertEquals($account->getSummaryBalance(), $expectedNewRub);
         assertEquals($account->getSupportedCurrencies(), [CurrenciesEnum::RUB, CurrenciesEnum::EUR]);
         $bank->setNewCurrencyRate(CurrenciesEnum::EUR, CurrenciesEnum::RUB, 200);
-        $expectedNewEur = 50 + (6100 / 200);
+        $expectedNewEur = round(50 + (6100 / 200), 3);
         assertEquals($account->getSummaryBalance(CurrenciesEnum::EUR), $expectedNewEur);
     }
 
