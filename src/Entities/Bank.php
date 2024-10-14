@@ -6,7 +6,6 @@ namespace Banking\Entities;
 use Banking\Entities\Contracts\AccountEntityInterface;
 use Banking\Entities\Contracts\BankEntityInterface;
 use Banking\Entities\Contracts\CurrencyRateEntityInterface;
-use Banking\Enums\CurrencyCodesEnum;
 use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
 use Banking\Exceptions\Values\WrongCurrencyCodeException;
 use Banking\Exceptions\Values\WrongCurrencyRateValueException;
@@ -66,7 +65,6 @@ class Bank implements BankEntityInterface
      * @return CurrencyRate
      * @throws WrongCurrencyCodeException
      * @throws WrongCurrencyRateValueException
-     * @throws UnsupportedCurrencyCode
      */
     public function setNewCurrencyRate(string $currency, string $currencyRel, float $value = 1): CurrencyRate
     {
