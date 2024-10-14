@@ -35,7 +35,7 @@ class Bank implements BankEntityInterface
      * @throws WrongCurrencyRateValueException
      * @throws UnsupportedCurrencyCode
      */
-    public function exchange(string $currencyFrom, string $currencyTo, float $amount): float
+    public function convert(string $currencyFrom, string $currencyTo, float $amount): float
     {
 
         if ($currencyFrom === $currencyTo) {

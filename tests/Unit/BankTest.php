@@ -67,7 +67,7 @@ class BankTest extends Unit
             $dummyCurrencyRate->getValue()
         );
 
-        $result = $this->bank->exchange(
+        $result = $this->bank->convert(
             $dummyBalanceData->getCurrencyCode(),
             $dummyCurrencyRate->getCurrencyRel(),
             $dummyBalanceData->getAmount()

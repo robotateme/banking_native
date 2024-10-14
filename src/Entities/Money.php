@@ -26,7 +26,7 @@ class Money implements MoneyEntityInterface
     public function exchangeTo(string $currencyCodeTo): static
     {
         $currencyCodeTo = (new CurrencyCodeValue($currencyCodeTo))->getValue();
-        $amount = $this->bank->exchange(
+        $amount = $this->bank->convert(
             $this->currencyCode,
             $currencyCodeTo,
             $this->amount

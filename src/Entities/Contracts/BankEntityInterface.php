@@ -27,7 +27,7 @@ interface BankEntityInterface extends EntityInterface
      * @return float
      * @throws WrongCurrencyRateValueException
      */
-    public function exchange(string $currencyFrom, string $currencyTo, float $amount): float;
+    public function convert(string $currencyFrom, string $currencyTo, float $amount): float;
 
     /**
      * @return AccountEntityInterface

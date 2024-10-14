@@ -55,16 +55,4 @@ interface AccountEntityInterface extends EntityInterface
      * @return string|null
      */
     public function getDefaultCurrency(): ?string;
-
-    /**
-     * @param  string|null  $currencyCode
-     * @return float
-     */
-    public function getCurrencyBalance(string $currencyCode = null): float;
-
-    /**
-     * @return array
-     */
-    public function getCurrencyBalances(): array;
-
 }
