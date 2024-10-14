@@ -21,13 +21,14 @@ class CurrencyBalance implements CurrencyBalanceEntityInterface
 
     /**
      * @param  float  $value
-     * @return void
+     * @return float
      * @throws WrongBalanceAmountException
      */
-    public function deposit(float $value): void
+    public function deposit(float $value): float
     {
         $depositValue = new BalanceAmountValue($value);
         $this->amount += $depositValue->getValue();
+        return $value;
     }
 
     /**

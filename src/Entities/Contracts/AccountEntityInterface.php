@@ -32,9 +32,9 @@ interface AccountEntityInterface extends EntityInterface
     /**
      * @param  string  $currencyCode
      * @param  float  $amount
-     * @return void
+     * @return float
      */
-    public function deposit(string $currencyCode, float $amount): void;
+    public function deposit(string $currencyCode, float $amount): float;
 
 
     /**

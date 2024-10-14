@@ -105,18 +105,18 @@ class Account implements AccountEntityInterface
     /**
      * @param  string  $currencyCode
      * @param  float  $amount
-     * @return void
+     * @return float
      * @throws UnsupportedCurrencyCode
      * @throws WrongBalanceAmountException
      */
-    public function deposit(string $currencyCode, float $amount): void
+    public function deposit(string $currencyCode, float $amount): float
     {
         $balance = $this->currencyBalances[$currencyCode] ?? null;
         if (is_null($balance)) {
             throw new UnsupportedCurrencyCode();
         }
 
-        $balance->deposit($amount);
+        return $balance->deposit($amount);
     }
 
     /**
