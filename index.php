@@ -4,13 +4,8 @@ require_once __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.
 use Banking\Entities\Account;
 use Banking\Entities\Bank;
 use Banking\Enums\CurrenciesEnum;
-use Banking\Exceptions\Entities\CurrencyBalanceAlreadyExistsException;
-use Banking\Exceptions\Entities\DefaultCurrencyIsNotSet;
-use Banking\Exceptions\Entities\UnsupportedCurrencyCode;
-use Banking\Exceptions\Values\BalanceInsufficientFundsException;
-use Banking\Exceptions\Values\WrongBalanceAmountException;
-use Banking\Exceptions\Values\WrongCurrencyCodeException;
-use Banking\Exceptions\Values\WrongCurrencyRateValueException;
+use Banking\Exceptions\Entities\Contracts\BaseEntityException;
+use Banking\Exceptions\Values\Contracts\BaseValueException;
 
 try {
     $bank = new Bank();
@@ -58,8 +53,7 @@ try {
 
 
 } catch (
-WrongCurrencyCodeException|UnsupportedCurrencyCode|WrongBalanceAmountException|CurrencyBalanceAlreadyExistsException|
-DefaultCurrencyIsNotSet|WrongCurrencyRateValueException|BalanceInsufficientFundsException $e) {
+BaseEntityException|BaseValueException $e) {
     dump($e->getMessage());
 }
 
